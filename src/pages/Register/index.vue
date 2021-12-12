@@ -1,10 +1,12 @@
 <template>
-
+  <div>
+    我是Register
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Login"
+  name: "Register"
 }
 </script>
 

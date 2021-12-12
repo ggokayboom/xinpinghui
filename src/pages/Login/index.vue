@@ -1,10 +1,12 @@
 <template>
-$END$
+  <div>
+    我是Login
+  </div>
 </template>
 
 <script>
 export default {
-name: "index"
+  name: "Login"
 }
 </script>
 
