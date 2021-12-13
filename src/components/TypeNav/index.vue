@@ -1,32 +1,35 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex">
+      <div @mouseleave="leaveShow" @mouseenter="enterShow" >
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2" @click="goSearch">
-            <div class="item" v-for="(c1,index) in categoryList.slice(0,15)" :key="c1.categoryId" :class="{cur:currentIndex == index}">
-              <h3 @mouseenter="changeIndex(index)">
-                <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-              </h3>
-              <div class="item-list clearfix" :style="{display:currentIndex === index? 'block':'none'}">
-                <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
-                  <dl class="fore">
-                    <dt>
-                      <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
-                    </dt>
-                    <dd>
-                      <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                        <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
-                      </em>
-                    </dd>
-                  </dl>
+        <!--添加过渡动画，必须带有v-if或者v-show标签才可以-->
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <div class="all-sort-list2" @click="goSearch">
+              <div class="item" v-for="(c1,index) in categoryList.slice(0,15)" :key="c1.categoryId" :class="{cur:currentIndex === index}">
+                <h3 @mouseenter="changeIndex(index)">
+                  <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+                </h3>
+                <div class="item-list clearfix" :style="{display:currentIndex === index? 'block':'none'}">
+                  <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
+                    <dl class="fore">
+                      <dt>
+                        <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+                      </dt>
+                      <dd>
+                        <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
+                          <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
-            </div>
 
+            </div>
           </div>
-        </div>
+        </transition>
       </div>
 
       <nav class="nav">
@@ -53,6 +56,7 @@ export default {
   data(){
     return {
       currentIndex:-1,
+      show:true,
     }
   },
   methods:{
@@ -60,9 +64,6 @@ export default {
     changeIndex: throttle(function (index){
       this.currentIndex = index
     },50),
-    leaveIndex(){
-      this.currentIndex = -1
-    },
     goSearch(event){
       let element = event.target
       let {categoryname,category1id,category2id,category3id} = element.dataset
@@ -79,12 +80,23 @@ export default {
         location.query = query
         this.$router.push(location)
       }
+    },
+    //鼠标移入，是商品分类列表显示
+    enterShow(){
+      this.show = true
+    },
+    //鼠标离开时，消除蓝色背景，同时是使商品分类列表隐藏
+    leaveShow(){
+      this.currentIndex = -1
+      //在home路由组件中商品分类列表不能隐藏
+      if(this.$route.path !== '/home') {
+        this.show = false
+      }
     }
   },
   //组件挂载完毕，可以向服务器发请求
   mounted() {
-    //通知Vuex发请求，获取数据，存储于仓库之中
-    this.$store.dispatch('home/categoryList')
+    this.show = this.$route.path === '/home';
   },
   computed:{
     // ...mapState({
@@ -206,6 +218,21 @@ export default {
           }
         }
       }
+    }
+    //过渡动画的样式
+    //过渡动画开始状态（进入的起点，离开的终点）
+    .sort-enter, .sort-leave-to{
+      height: 0;
+      opacity: 0;
+    }
+    //过渡动画结束状态（进入的终点，离开的起点）
+    .sort-enter-to, .sort-leave{
+      height: 461px;
+      opacity: 1;
+    }
+    //定义动画时间、速率
+    .sort-enter-active, .sort-leave-active{
+      transition: all .5s linear;
     }
   }
 }

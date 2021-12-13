@@ -35,24 +35,24 @@ export default new VueRouter({
         {
             path:'/home',
             component:Home,
-            meta:{show:true}
+            meta:{isShow:true}
         },
         {
             path:'/login',
             component:Login,
-            meta:{show:false}
+            meta:{isShow:false}
         },
         {
             path:'/register',
             component:Register,
-            meta:{show:false}
+            meta:{isShow:false}
         },
         {
             name:'search',
             //加问号可以使params参数可有可无，不影响path的展示
             path:'/search/:keyword?',
             component:Search,
-            meta:{show:true}
+            meta:{isShow:true}
         },
         {
             path:'*',

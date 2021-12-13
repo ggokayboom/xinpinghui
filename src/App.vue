@@ -3,7 +3,7 @@
     <Header></Header>
     <!--路由组件出口的地方-->
     <router-view></router-view>
-    <Footer v-show="$route.meta.show"></Footer>
+    <Footer v-show="$route.meta.isShow"></Footer>
   </div>
 </template>
 
@@ -14,7 +14,12 @@ import Footer from "@/components/Footer";
 export default {
   name: 'App',
   components: {
-    Header,Footer
+    Header,
+    Footer,
+  },
+  mounted() {
+    //通知Vuex发请求，获取数据，存储于仓库之中
+    this.$store.dispatch('home/categoryList')
   }
 }
 </script>
