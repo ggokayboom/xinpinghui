@@ -59,16 +59,15 @@ export default {
   },
   methods: {
     goSearch(keyword){
-      this.$router.push({
+      let location = {
         name:'search',
         params:{
           //解决传入的params是空字符串的问题
           keyword : keyword || undefined,
         },
-        query:{
-          keyword:keyword.toUpperCase()
-        }
-      })
+      }
+      location.query = this.$route.query
+      this.$router.push(location)
     },
   }
 };
