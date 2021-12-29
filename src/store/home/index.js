@@ -1,13 +1,18 @@
-import {reqCategoryList} from "@/api";
+import {reqCategoryList, reqBannerList} from "@/api";
 //home模块的小仓库
 const state = {
     categoryList:[],
+    bannerList:[],
 }
 
 const mutations = {
     CATEGORYLIST(state, value){
         state.categoryList = value
+    },
+    GETBANNERLIST(state, value){
+        state.bannerList = value
     }
+
 }
 
 const actions = {
@@ -16,6 +21,12 @@ const actions = {
         let result = await reqCategoryList();
         if(result.code === 200){
             context.commit("CATEGORYLIST", result.data)
+        }
+    },
+    async getBannerList(context){
+        let result = await reqBannerList();
+        if(result.code === 200){
+            context.commit("GETBANNERLIST", result.data)
         }
     }
 }

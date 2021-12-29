@@ -106,7 +106,8 @@ export default {
     //   categoryList:state=>state.home.categoryList
     // })
     ...mapState('home',['categoryList'])
-  }
+  },
+
 };
 </script>
 

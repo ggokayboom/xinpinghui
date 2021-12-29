@@ -9,6 +9,10 @@ import store from "@/store";
 
 Vue.config.productionTip = false
 Vue.component(TypeNav.name,TypeNav)
+//引入mockServe.js
+import '@/mock/mockServe'
+
+import 'swiper/css/swiper.css';
 
 new Vue({
   render: h => h(App),
