@@ -1,8 +1,9 @@
-import {reqCategoryList, reqBannerList} from "@/api";
+import {reqCategoryList, reqBannerList, reqFloorList} from "@/api";
 //home模块的小仓库
 const state = {
     categoryList:[],
     bannerList:[],
+    floorList:[],
 }
 
 const mutations = {
@@ -11,6 +12,9 @@ const mutations = {
     },
     GETBANNERLIST(state, value){
         state.bannerList = value
+    },
+    GETFLOORLIST(state, value){
+        state.floorList = value
     }
 
 }
@@ -27,6 +31,12 @@ const actions = {
         let result = await reqBannerList();
         if(result.code === 200){
             context.commit("GETBANNERLIST", result.data)
+        }
+    },
+    async getFloorList(context){
+        let result = await reqFloorList();
+        if(result.code === 200){
+            context.commit("GETFLOORLIST", result.data)
         }
     }
 }
